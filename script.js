@@ -1,75 +1,33 @@
-    document.addEventListener('DOMContentLoaded', () => {
-  const cartoonsListElement = document.getElementById('cartoons-list');
-  const cartoonsData = [
-      {
-          "title": "Reboot",
-          "year": 1994,
-          "creator": [
-              "Gavin Blair",
-              "John Grace",
-              "Philip Mitchell"
-          ],
-          "rating": "TV-Y7",
-          "genre": [
-              "Adventure",
-              "Action"
-          ],
-          "runtime_in_minutes": 30,
-          "episodes": 47,
-          "image": "https://m.media-amazon.com/images/M/MV5BMTg1NzQ3NTI0MF5BMl5BanBnXkFtZTcwMzcwOTUyMQ@@._V1_.jpg",
-          "id": 1
-      },
-      {
-          "title": "Beast Wars",
-          "year": 1996,
-          "creator": [
-              "Steve Sacks",
-              "Colin Davies",
-              "John Pozer"
-          ],
-          "rating": "TV-Y7",
-          "genre": [
-              "Sci-Fi",
-              "Action"
-          ],
-          "runtime_in_minutes": 30,
-          "episodes": 52,
-          "image": "https://m.media-amazon.com/images/M/MV5BNDUxODg4MzE5NV5BMl5BanBnXkFtZTYwNDA0OTc4._V1_.jpg",
-          "id": 2
-      }
-  ];
+async function getData() {
+    const response = await fetch('https://api.sampleapis.com/cartoons/cartoons2D');
+    const data = await response.json();
+    const appContainer = document.getElementById('app');
 
-  cartoonsData.forEach(cartoon => {
-      const cartoonCard = document.createElement('div');
-      cartoonCard.className = 'cartoon-card';
+    data.forEach(cartoon => {
+        const cartoonCard = document.createElement('div');
+        cartoonCard.className = 'cartoon-card';
 
-      const imageElement = document.createElement('img');
-      imageElement.src = cartoon.image;
-      imageElement.alt = cartoon.title;
+        const img = document.createElement('img');
+        img.src = cartoon.image;
+        img.alt = cartoon.title;
 
-      const titleElement = document.createElement('h2');
-      titleElement.textContent = cartoon.title;
+        const title = document.createElement('h2');
+        title.textContent = cartoon.title;
 
-      const creatorsElement = document.createElement('p');
-      creatorsElement.textContent = 'Creators: ' + cartoon.creator.join(', ');
+        const details = document.createElement('p');
+        details.innerHTML = `Year: ${cartoon.year}<br>
+                            Creator: ${cartoon.creator.join(', ')}<br>
+                            Rating: ${cartoon.rating}<br>
+                            Genre: ${cartoon.genre.join(', ')}<br>
+                            Runtime: ${cartoon.runtime_in_minutes} minutes<br>
+                            Episodes: ${cartoon.episodes}`;
 
-      const genreElement = document.createElement('p');
-      genreElement.textContent = 'Genre: ' + cartoon.genre.join(', ');
+        cartoonCard.appendChild(img);
+        cartoonCard.appendChild(title);
+        cartoonCard.appendChild(details);
 
-      const yearElement = document.createElement('p');
-      yearElement.textContent = 'Year: ' + cartoon.year;
+        appContainer.appendChild(cartoonCard);
+    });
+}
 
-      const episodesElement = document.createElement('p');
-      episodesElement.textContent = 'Episodes: ' + cartoon.episodes;
-
-      cartoonCard.appendChild(imageElement);
-      cartoonCard.appendChild(titleElement);
-      cartoonCard.appendChild(creatorsElement);
-      cartoonCard.appendChild(genreElement);
-      cartoonCard.appendChild(yearElement);
-      cartoonCard.appendChild(episodesElement);
-
-      cartoonsListElement.appendChild(cartoonCard);
-  });
-});
- 
+getData();
